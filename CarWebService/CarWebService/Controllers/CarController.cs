@@ -1,4 +1,6 @@
-﻿using CarWebService.Models;
+﻿using CarWebService.Dtos;
+using CarWebService.Managers;
+using CarWebService.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +13,7 @@ namespace CarWebService.Controllers
 {
     public class CarController : ApiController
     {
-        private CarDbContext _CarDbContext = new CarDbContext();
-
+        private CarManager _CarManager = new CarManager();
         // GET api/<controller>
         //public IEnumerable<string> Get()
         //{
@@ -24,17 +25,9 @@ namespace CarWebService.Controllers
         [Route("api/Car/{yearMade}")]
         public IHttpActionResult GetCarsByYearMade(string yearMade)
         {
-            List<Car> cars = new List<Car>();
-            try
-            {
-                cars = _CarDbContext.Cars.Where(x => x.YearMade == yearMade).ToList();
-            }
-            catch
-            {
-                return InternalServerError();
-            }
+            List<CarDto> cars = _CarManager.GetCarsByYearMade(yearMade);
 
-            return Ok(cars);
+            return cars != null ? Ok(cars) : (IHttpActionResult)InternalServerError();
         }
 
         // POST api/<controller>
@@ -42,24 +35,9 @@ namespace CarWebService.Controllers
         [Route("api/Car")]
         public async Task<IHttpActionResult> Post([FromBody] CarDto car)
         {
-            try
-            {
-                _CarDbContext.Cars.Add(new Car
-                {
-                    Id = Guid.NewGuid(),
-                    Name = car.Name,
-                    Color = car.Color,
-                    YearMade = car.YearMade
-                });
+            var created = await _CarManager.TryCreateCar(car);
 
-                await _CarDbContext.SaveChangesAsync();
-            }
-            catch
-            {
-                return InternalServerError();
-            }
-
-            return Ok();
+            return created ? Ok() : (IHttpActionResult)InternalServerError();
         }
 
         // PUT api/<controller>/5
@@ -72,12 +50,5 @@ namespace CarWebService.Controllers
         //public void Delete(int id)
         //{
         //}
-    }
-
-    public class CarDto
-    {
-        public string Name { get; set; }
-        public string Color { get; set; }
-        public string YearMade { get; set; }
     }
 }

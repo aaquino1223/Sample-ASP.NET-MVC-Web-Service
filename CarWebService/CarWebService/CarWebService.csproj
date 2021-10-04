@@ -165,9 +165,11 @@
     <Compile Include="Controllers\CarController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Dtos\CarDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Managers\CarManager.cs" />
     <Compile Include="Migrations\202110040110465_AddCarTable.cs" />
     <Compile Include="Migrations\202110040110465_AddCarTable.designer.cs">
       <DependentUpon>202110040110465_AddCarTable.cs</DependentUpon>
