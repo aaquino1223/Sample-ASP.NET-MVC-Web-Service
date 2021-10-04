@@ -8,6 +8,7 @@ using System.Web;
 
 namespace CarWebService.Managers
 {
+    //TODO: Add more meaningful results for each call
     public class CarManager
     {
         private CarDbContext _Context = new CarDbContext();
@@ -28,6 +29,43 @@ namespace CarWebService.Managers
                     Color = car.Color,
                     YearMade = car.YearMade
                 });
+
+                await _Context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task<bool> TryUpdateCar(string id, CarDto car)
+        {
+            try
+            {
+                if (!Guid.TryParse(id, out Guid carGuid))
+                    return false;
+
+                var dbCar = await _Context.Cars.FindAsync(carGuid);
+
+                if (dbCar == null)
+                    return false;
+
+                if (car.Name != null)
+                {
+                    dbCar.Name = car.Name;
+                }
+
+                if (car.Color != null)
+                {
+                    dbCar.Color = car.Color;
+                }
+
+                if (car.YearMade != null)
+                {
+                    dbCar.YearMade = car.YearMade;
+                }
 
                 await _Context.SaveChangesAsync();
             }
