@@ -12,6 +12,7 @@ using System.Web.Http;
 
 namespace CarWebService.Controllers
 {
+    [Authorize]
     public class CarController : ApiController
     {
         private CarManager _CarManager = new CarManager(new CarDbContext());
