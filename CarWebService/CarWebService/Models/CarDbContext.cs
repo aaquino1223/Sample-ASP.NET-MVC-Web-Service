@@ -13,6 +13,6 @@ namespace CarWebService.Models
 
         }
 
-        public DbSet<Car> Cars { get; set; }
+        public virtual DbSet<Car> Cars { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace CarWebService.Controllers
 {
     public class CarController : ApiController
     {
-        private CarManager _CarManager = new CarManager();
+        private CarManager _CarManager = new CarManager(new CarDbContext());
         // GET api/<controller>
         //public IEnumerable<string> Get()
         //{

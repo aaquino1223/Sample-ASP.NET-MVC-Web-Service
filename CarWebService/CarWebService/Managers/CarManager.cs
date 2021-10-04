@@ -10,13 +10,18 @@ namespace CarWebService.Managers
 {
     public class CarManager
     {
-        private CarDbContext _CarDbContext = new CarDbContext();
+        private CarDbContext _Context = new CarDbContext();
+
+        public CarManager(CarDbContext context)
+        {
+            _Context = context;
+        }
 
         public async Task<bool> TryCreateCar(CarDto car)
         {
             try
             {
-                _CarDbContext.Cars.Add(new Car
+                _Context.Cars.Add(new Car
                 {
                     Id = Guid.NewGuid(),
                     Name = car.Name,
@@ -24,7 +29,7 @@ namespace CarWebService.Managers
                     YearMade = car.YearMade
                 });
 
-                await _CarDbContext.SaveChangesAsync();
+                await _Context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -39,7 +44,7 @@ namespace CarWebService.Managers
             List<CarDto> cars = null;
             try
             {
-                cars = _CarDbContext.Cars.Where(x => x.YearMade == yearMade).Select(y => new CarDto() { Name = y.Name, Color = y.Color, YearMade = y.YearMade } ).ToList();
+                cars = _Context.Cars.Where(x => x.YearMade == yearMade).Select(y => new CarDto() { Name = y.Name, Color = y.Color, YearMade = y.YearMade } ).ToList();
             }
             catch (Exception ex)
             {
