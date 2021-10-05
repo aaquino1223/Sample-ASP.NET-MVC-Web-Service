@@ -1,6 +1,7 @@
 ﻿using CarWebService.Dtos;
 using CarWebService.Managers;
 using CarWebService.Models;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ using System.Web.Http;
 namespace CarWebService.Controllers
 {
     [Authorize]
+    [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
     public class CarController : ApiController
     {
         private CarManager _CarManager = new CarManager(new CarDbContext());
